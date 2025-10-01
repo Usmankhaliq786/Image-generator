@@ -1,0 +1,75 @@
+{
+  "Header": {
+    "title": "Welcome to Our Image Editor",
+    "paragraph": "Smart AI tools to transform your images – remove backgrounds, enhance quality, and fix wrinkles instantly."
+  },
+  "Features": [
+    {
+      "icon": "fa fa-camera",
+      "title": "AI Background Remover",
+      "text": "Automatically detect and remove image backgrounds with one click."
+    },
+    {
+      "icon": "fa fa-bolt",
+      "title": "Fast Processing",
+      "text": "Experience lightning-fast editing with our optimized AI models."
+    },
+    {
+      "icon": "fa fa-thumbs-up",
+      "title": "User Friendly",
+      "text": "Simple and clean interface designed for everyone."
+    }
+  ],
+  "About": {
+    "paragraph": "Our AI-powered image editing platform helps users achieve professional-level results in seconds. Whether you need to remove a background, enhance image quality, or make clothes look neat, our tools are built for you.",
+    "Why": [
+      "AI-powered background remover",
+      "Instant image enhancement",
+      "Wrinkle fixing for clothes"
+    ],
+    "Why2": [
+      "Fast and reliable processing",
+      "Easy-to-use interface",
+      "Free updates and support"
+    ]
+  },
+  "Services": [
+    {
+      "icon": "fa fa-scissors",
+      "name": "Background Remover",
+      "text": "Easily remove backgrounds from images with AI precision in just one click."
+    },
+    {
+      "icon": "fa fa-magic",
+      "name": "Image Enhancer",
+      "text": "Automatically enhance image quality, adjust brightness, and improve clarity."
+    },
+    {
+      "icon": "fa fa-image",
+      "name": "Wrinkled to Ironed",
+      "text": "Transform wrinkled clothes in photos into smooth, polished visuals instantly."
+    }
+  ],
+  "Gallery": [
+  {
+    "title": "Sample Image 1",
+    "smallImage": "img/portfolio/01-small.jpg",
+    "largeImage": "img/portfolio/01-large.jpg"
+  },
+  {
+    "title": "Sample Image 2",
+    "smallImage": "img/portfolio/02-small.jpg",
+    "largeImage": "img/portfolio/02-large.jpg"
+  },
+  {
+    "title": "Sample Image 3",
+    "smallImage": "img/portfolio/03-small.jpg",
+    "largeImage": "img/portfolio/03-large.jpg"
+  }
+],
+  "Contact": {
+    "address": "123 AI Street, Tech City, PK",
+    "phone": "+92 300 1234567",
+    "email": "support@imageeditor.com"
+  }
+}

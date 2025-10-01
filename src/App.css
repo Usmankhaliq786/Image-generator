@@ -1,0 +1,86 @@
+@media screen and (max-width: 400px) {
+  #features {
+    padding: 20px;
+    width: 111%;
+  }
+  #about,
+  #services,
+  #testimonials,
+  #team,
+  #contact,
+  #footer {
+    width: 111%;
+  }
+
+  #portfolio {
+    width: 110%;
+  }
+}
+/* 🔑 Auth Container Styles */
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  font-family: Arial, sans-serif;
+}
+
+.auth-container h2 {
+  color: #fff;
+  margin-bottom: 20px;
+  font-size: 28px;
+}
+
+.auth-container form {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.2);
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-container input {
+  margin: 10px 0;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.auth-container input:focus {
+  outline: none;
+  border-color: #2575fc;
+  box-shadow: 0px 0px 6px rgba(37, 117, 252, 0.4);
+}
+
+.auth-container button {
+  margin-top: 15px;
+  padding: 12px;
+  background: #2575fc;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.auth-container button:hover {
+  background: #1a5edb;
+}
+
+.auth-container p {
+  margin-top: 15px;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.auth-container p:hover {
+  color: #e0e0e0;
+}
