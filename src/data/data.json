@@ -48,7 +48,13 @@
       "icon": "fa fa-image",
       "name": "Wrinkled to Ironed",
       "text": "Transform wrinkled clothes in photos into smooth, polished visuals instantly."
-    }
+    },
+    {
+  "icon": "fa fa-adjust",
+  "name": "Background Remover & Centralized Image",
+  "text": "Automatically remove image backgrounds and perfectly center your subject in one click."
+}
+
   ],
   "Gallery": [
   {

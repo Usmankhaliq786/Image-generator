@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export const Services = ({ data }) => {
   const navigate = useNavigate();
 
-  // Default services (fallback)
+  // ✅ Default services with proper paths
   const defaultServices = [
     {
       name: "Background Remover",
@@ -21,188 +21,248 @@ export const Services = ({ data }) => {
     {
       name: "Wrinkled to Ironed",
       text: "Make clothes in photos look neat and ironed in seconds.",
-      icon: "fa fa-tshirt",
+      icon: "fa fa-image",
       path: "/wrinkled-to-ironed",
+    },
+    {
+      name: "Background Remover & Centralized Image",
+      text: "Remove background and automatically center the subject using AI.",
+      icon: "fa fa-adjust",
+      path: "/background-center",
     },
   ];
 
-  // build servicesData: prefer incoming data, but ensure path is present
+  // ✅ Merge JSON data + add path fallback
   const servicesData =
     Array.isArray(data) && data.length > 0
-      ? data.map((d, i) => ({
-          ...d,
-          path: d.path || defaultServices[i]?.path || `/service-${i}`,
+      ? data.map((item, index) => ({
+          ...item,
+          path: defaultServices[index]?.path || `/service-${index}`,
         }))
       : defaultServices;
 
-  // Modal / upload state
   const [selectedService, setSelectedService] = useState(null);
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
-  // create/revoke preview URL
   useEffect(() => {
-    if (!file) {
-      setPreviewUrl(null);
-      return;
-    }
+    if (!file) return setPreviewUrl(null);
     const url = URL.createObjectURL(file);
     setPreviewUrl(url);
-    return () => {
-      URL.revokeObjectURL(url);
-    };
+    return () => URL.revokeObjectURL(url);
   }, [file]);
 
-  const openModal = (service) => {
-    setSelectedService(service);
-    setFile(null);
-  };
-
-  const closeModal = () => {
-    setSelectedService(null);
-    setFile(null);
-    setPreviewUrl(null);
-    setIsSubmitting(false);
-  };
-
   const handleFileChange = (e) => {
-    const f = e.target.files && e.target.files[0];
+    const f = e.target.files?.[0];
     if (f) setFile(f);
   };
 
-  // Placeholder submit — replace with real API call later
-  const handleUploadAndSubmit = async () => {
+  const handleUploadAndSubmit = () => {
     if (!file || !selectedService) return alert("Select an image first.");
     setIsSubmitting(true);
-
-    try {
-      // Example: send to your backend
-      // const formData = new FormData();
-      // formData.append("file", file);
-      // formData.append("service", selectedService.name);
-      // await fetch("/api/upload", { method: "POST", body: formData });
-
-      // For now just simulate and then navigate to tool page:
-      setTimeout(() => {
-        setIsSubmitting(false);
-        closeModal();
-        navigate(selectedService.path);
-      }, 900);
-    } catch (err) {
-      console.error(err);
+    setTimeout(() => {
       setIsSubmitting(false);
-      alert("Upload failed. Check console.");
-    }
+      setSelectedService(null);
+      navigate(selectedService.path);
+    }, 1000);
+  };
+
+  // ✅ Inline professional styles
+  const styles = {
+    section: {
+      padding: "80px 20px",
+      background: "linear-gradient(135deg, #f8f9fc 0%, #eef1f8 100%)",
+      textAlign: "center",
+      fontFamily: "Inter, sans-serif",
+    },
+    title: {
+      fontSize: "2.5rem",
+      fontWeight: "700",
+      color: "#1e1e2f",
+      marginBottom: "10px",
+    },
+    subtitle: {
+      color: "#6c757d",
+      marginBottom: "50px",
+    },
+    grid: {
+      display: "grid",
+      gridTemplateColumns: "repeat(2, 1fr)",
+      gap: "30px",
+      justifyItems: "center",
+      maxWidth: "1000px",
+      margin: "0 auto",
+    },
+    card: (isHovered) => ({
+      background: "#fff",
+      borderRadius: "20px",
+      padding: "35px 25px",
+      width: "100%",
+      boxShadow: isHovered
+        ? "0 10px 30px rgba(0, 0, 0, 0.15)"
+        : "0 5px 15px rgba(0, 0, 0, 0.08)",
+      transform: isHovered ? "translateY(-8px)" : "translateY(0)",
+      transition: "all 0.3s ease",
+      textAlign: "center",
+    }),
+    iconWrapper: {
+      width: "80px",
+      height: "80px",
+      borderRadius: "50%",
+      background: "linear-gradient(135deg, #007bff, #00b4d8)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontSize: "35px",
+      color: "white",
+      margin: "0 auto 20px",
+    },
+    cardTitle: {
+      fontWeight: "600",
+      fontSize: "1.2rem",
+      marginBottom: "10px",
+      color: "#212529",
+    },
+    cardText: {
+      color: "#6c757d",
+      fontSize: "0.95rem",
+      marginBottom: "25px",
+    },
+    buttonGroup: {
+      display: "flex",
+      justifyContent: "center",
+      gap: "10px",
+    },
+    btnPrimary: {
+      background: "linear-gradient(135deg, #007bff, #00b4d8)",
+      border: "none",
+      color: "white",
+      padding: "10px 20px",
+      borderRadius: "10px",
+      fontWeight: "500",
+      cursor: "pointer",
+      transition: "all 0.3s ease",
+    },
+    btnOutline: {
+      background: "transparent",
+      border: "2px solid #007bff",
+      color: "#007bff",
+      padding: "10px 20px",
+      borderRadius: "10px",
+      fontWeight: "500",
+      cursor: "pointer",
+      transition: "all 0.3s ease",
+    },
+    modalOverlay: {
+      position: "fixed",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      background: "rgba(30,30,30,0.7)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 999,
+    },
+    modalBox: {
+      background: "#fff",
+      borderRadius: "15px",
+      padding: "30px",
+      width: "90%",
+      maxWidth: "500px",
+      boxShadow: "0 10px 40px rgba(0,0,0,0.25)",
+      textAlign: "center",
+    },
+    previewImg: {
+      maxWidth: "100%",
+      borderRadius: "10px",
+      marginTop: "10px",
+    },
   };
 
   return (
-    <div id="services" className="text-center">
-      <div className="container">
-        <div className="section-title">
-          <h2>Our Services</h2>
-          <p>Choose from our smart AI-powered image editing services.</p>
-        </div>
+    <section style={styles.section}>
+      <h2 style={styles.title}>✨ Our AI Services</h2>
+      <p style={styles.subtitle}>
+        Transform your photos instantly using smart AI tools.
+      </p>
 
-        <div className="row">
-          {servicesData.map((s, i) => (
-            <div key={`${s.name}-${i}`} className="col-md-4 mb-4">
-              <div className="card h-100 p-3">
-                <div className="card-body text-center">
-                  <i className={s.icon} style={{ fontSize: "30px" }}></i>
-                  <h3 className="mt-2">{s.name}</h3>
-                  <p>{s.text}</p>
-
-                  <div className="d-flex justify-content-center gap-2">
-                    {/* Primary: go to tool page */}
-                    <button
-                      className="btn btn-primary"
-                      onClick={() => navigate(s.path)}
-                    >
-                      Try Now
-                    </button>
-
-                    {/* Secondary: quick demo modal (upload & preview) */}
-                    <button
-                      className="btn btn-outline-secondary"
-                      onClick={() => openModal(s)}
-                    >
-                      Quick Demo
-                    </button>
-                  </div>
-                </div>
+      <div style={styles.grid}>
+        {servicesData.map((s, i) => {
+          const isHovered = hoveredIndex === i;
+          return (
+            <div
+              key={i}
+              style={styles.card(isHovered)}
+              onMouseEnter={() => setHoveredIndex(i)}
+              onMouseLeave={() => setHoveredIndex(null)}
+            >
+              <div style={styles.iconWrapper}>
+                <i className={s.icon} aria-hidden="true"></i>
+              </div>
+              <h3 style={styles.cardTitle}>{s.name}</h3>
+              <p style={styles.cardText}>{s.text}</p>
+              <div style={styles.buttonGroup}>
+                <button
+                  style={styles.btnPrimary}
+                  onClick={() => navigate(s.path)}
+                >
+                  Try Now
+                </button>
+                <button
+                  style={styles.btnOutline}
+                  onClick={() => setSelectedService(s)}
+                >
+                  Quick Demo
+                </button>
               </div>
             </div>
-          ))}
-        </div>
+          );
+        })}
       </div>
 
-      {/* Modal (Quick Demo) */}
       {selectedService && (
-        <div
-          className="modal fade show"
-          style={{ display: "block", background: "rgba(0,0,0,0.6)" }}
-        >
-          <div className="modal-dialog modal-lg modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">{selectedService.name} — Quick Demo</h5>
-                <button className="btn-close" onClick={closeModal}></button>
-              </div>
-
-              <div className="modal-body">
-                <p>{selectedService.text}</p>
-
-                <div className="mb-3">
-                  <label className="form-label">Upload an image (preview)</label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="form-control"
-                    onChange={handleFileChange}
-                  />
-                </div>
-
-                {previewUrl && (
-                  <div className="text-center">
-                    <h6>Preview</h6>
-                    <img
-                      src={previewUrl}
-                      alt="preview"
-                      style={{ maxWidth: "100%", borderRadius: 8 }}
-                    />
-                  </div>
-                )}
-              </div>
-
-              <div className="modal-footer">
-                <button className="btn btn-secondary" onClick={closeModal}>
-                  Close
-                </button>
-
-                <button
-                  className="btn btn-success"
-                  disabled={!file || isSubmitting}
-                  onClick={handleUploadAndSubmit}
-                >
-                  {isSubmitting ? "Submitting..." : "Upload & Go to Tool"}
-                </button>
-
-                <button
-                  className="btn btn-primary"
-                  onClick={() => {
-                    // direct go to tool without upload
-                    closeModal();
-                    navigate(selectedService.path);
-                  }}
-                >
-                  Go to Tool
-                </button>
-              </div>
+        <div style={styles.modalOverlay}>
+          <div style={styles.modalBox}>
+            <h4>{selectedService.name} — Quick Demo</h4>
+            <p>{selectedService.text}</p>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              style={{ margin: "15px 0", width: "100%" }}
+            />
+            {previewUrl && (
+              <img src={previewUrl} alt="Preview" style={styles.previewImg} />
+            )}
+            <div
+              style={{
+                marginTop: "20px",
+                display: "flex",
+                gap: "10px",
+                justifyContent: "center",
+              }}
+            >
+              <button
+                style={styles.btnOutline}
+                onClick={() => setSelectedService(null)}
+              >
+                Close
+              </button>
+              <button
+                style={styles.btnPrimary}
+                disabled={!file || isSubmitting}
+                onClick={handleUploadAndSubmit}
+              >
+                {isSubmitting ? "Processing..." : "Upload & Go"}
+              </button>
             </div>
           </div>
         </div>
       )}
-    </div>
+    </section>
   );
 };
