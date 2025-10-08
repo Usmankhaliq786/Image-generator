@@ -5,6 +5,7 @@ const ImageProcessor = ({ title, description, iconClass, themeColor }) => {
   const [imageFile, setImageFile] = useState(null);
   const [folderFiles, setFolderFiles] = useState([]);
   const [imagePreview, setImagePreview] = useState(null);
+  const [processedImages, setProcessedImages] = useState([]);
   const [loading, setLoading] = useState(false);
 
   // Preview single uploaded image
@@ -26,20 +27,24 @@ const ImageProcessor = ({ title, description, iconClass, themeColor }) => {
     setFolderFiles(files);
   };
 
+  // Process single image
   const handleProcessSingle = () => {
     if (!imageFile) return alert("Please upload an image first!");
     setLoading(true);
     setTimeout(() => {
-      alert("Image processed (simulation)!");
+      // Simulation: processed image is same as original
+      setProcessedImages([URL.createObjectURL(imageFile)]);
       setLoading(false);
     }, 1500);
   };
 
+  // Process folder images
   const handleProcessFolder = () => {
     if (folderFiles.length === 0) return alert("Please select a folder!");
     setLoading(true);
     setTimeout(() => {
-      alert(`${folderFiles.length} images processed (simulation)!`);
+      const processed = folderFiles.map((f) => URL.createObjectURL(f));
+      setProcessedImages(processed);
       setLoading(false);
     }, 2000);
   };
@@ -71,7 +76,6 @@ const ImageProcessor = ({ title, description, iconClass, themeColor }) => {
         type="file"
         accept="image/*"
         onChange={(e) => setImageFile(e.target.files[0])}
-        className="form-control"
         style={{
           maxWidth: "400px",
           margin: "10px auto",
@@ -87,7 +91,6 @@ const ImageProcessor = ({ title, description, iconClass, themeColor }) => {
         directory=""
         multiple
         onChange={handleFolderUpload}
-        className="form-control"
         style={{
           maxWidth: "400px",
           margin: "10px auto",
@@ -96,7 +99,7 @@ const ImageProcessor = ({ title, description, iconClass, themeColor }) => {
         }}
       />
 
-      {/* Single Image Preview */}
+      {/* Uploaded previews */}
       {imagePreview && (
         <div style={{ marginTop: "30px" }}>
           <h5 style={{ color: "#333" }}>Uploaded Image:</h5>
@@ -110,24 +113,9 @@ const ImageProcessor = ({ title, description, iconClass, themeColor }) => {
               boxShadow: "0 3px 10px rgba(0,0,0,0.2)",
             }}
           />
-          <button
-            onClick={() => saveAs(imagePreview, `${title}.png`)}
-            style={{
-              marginTop: "15px",
-              background: themeColor,
-              color: "#fff",
-              padding: "10px 20px",
-              border: "none",
-              borderRadius: "8px",
-              cursor: "pointer",
-            }}
-          >
-            Download Image
-          </button>
         </div>
       )}
 
-      {/* Folder Preview */}
       {folderFiles.length > 0 && (
         <div style={{ marginTop: "30px" }}>
           <h5 style={{ color: "#333" }}>Folder Images:</h5>
@@ -138,41 +126,86 @@ const ImageProcessor = ({ title, description, iconClass, themeColor }) => {
               </li>
             ))}
           </ul>
-          <button
-            onClick={handleProcessFolder}
-            disabled={loading}
+        </div>
+      )}
+
+      {/* Processed images */}
+      {processedImages.length > 0 && (
+        <div style={{ marginTop: "30px" }}>
+          <h5 style={{ color: "#333" }}>Processed Output:</h5>
+          <div
             style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "10px",
+              justifyContent: "center",
               marginTop: "10px",
-              background: themeColor,
-              color: "#fff",
-              padding: "10px 20px",
-              border: "none",
-              borderRadius: "8px",
-              cursor: "pointer",
             }}
           >
-            {loading ? "Processing..." : "Process Folder"}
-          </button>
+            {processedImages.map((img, i) => (
+              <div key={i}>
+                <img
+                  src={img}
+                  alt={`Processed ${i}`}
+                  style={{
+                    maxWidth: "150px",
+                    borderRadius: "8px",
+                    boxShadow: "0 3px 10px rgba(0,0,0,0.2)",
+                  }}
+                />
+                <br />
+                <button
+                  onClick={() => saveAs(img, `${title}-${i + 1}.png`)}
+                  style={{
+                    marginTop: "5px",
+                    background: themeColor,
+                    color: "#fff",
+                    padding: "5px 10px",
+                    border: "none",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Download
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
       {/* Buttons */}
-      <div style={{ marginTop: "25px" }}>
+      <div style={{ marginTop: "25px", display: "flex", gap: "10px", justifyContent: "center" }}>
         <button
           onClick={handleProcessSingle}
-          disabled={loading}
+          disabled={loading || !imageFile}
           style={{
             background: themeColor,
             color: "#fff",
             border: "none",
             padding: "10px 20px",
             borderRadius: "8px",
-            cursor: "pointer",
-            transition: "0.3s",
+            cursor: loading ? "not-allowed" : "pointer",
             opacity: loading ? 0.6 : 1,
           }}
         >
           {loading ? "Processing..." : "Process Single Image"}
+        </button>
+
+        <button
+          onClick={handleProcessFolder}
+          disabled={loading || folderFiles.length === 0}
+          style={{
+            background: themeColor,
+            color: "#fff",
+            border: "none",
+            padding: "10px 20px",
+            borderRadius: "8px",
+            cursor: loading ? "not-allowed" : "pointer",
+            opacity: loading ? 0.6 : 1,
+          }}
+        >
+          {loading ? "Processing..." : "Process Folder"}
         </button>
       </div>
     </div>
